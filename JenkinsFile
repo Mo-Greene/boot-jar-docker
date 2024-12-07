@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Check Docker Version') {
+            steps {
+                echo 'Checking Docker version...'
+                sh '''
+                if command -v docker > /dev/null 2>&1; then
+                    echo "Docker is installed."
+                    docker --version
+                else
+                    echo "Docker is NOT installed."
+                    exit 1
+                fi
+                '''
+            }
+        }
+
+        stage('build') {
+            steps {
+                sh 'chmod +x ./gradlew'
+                sh './gradlew clean build'
+            }
+        }
+    }
+}
