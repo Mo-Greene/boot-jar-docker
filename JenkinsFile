@@ -14,9 +14,9 @@ pipeline {
                 ------------------------
                 Building Docker Image..
                 '''
-                sh ```
+                sh '''
                     docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG .
-                ```
+                '''
             }
         }
 
@@ -31,10 +31,10 @@ pipeline {
                     usernameVariable: 'DOCKER_USERNAME',
                     passwordVariable: 'DOCKER_PASSWORD'
                 )]) {
-                    sh ```
+                    sh '''
                         docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                         docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG
-                    ```
+                    '''
                 }
             }
         }
@@ -50,7 +50,7 @@ pipeline {
                     usernameVariable: 'DOCKER_USERNAME',
                     passwordVariable: 'DOCKER_PASSWORD'
                 )]) {
-                    sh ```
+                    sh '''
                         docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
                         if docker manifest inspect $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG > /dev/null 2>&1; then
@@ -59,7 +59,7 @@ pipeline {
                             echo "ERROR: Docker image $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG not found in the registry!"
                             exit 1
                         fi
-                    ```
+                    '''
                 }
             }
         }
